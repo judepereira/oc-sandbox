@@ -1,0 +1,17 @@
+services:
+  opencode:
+    build: .
+    network_mode: "service:network-filter"
+    user: "1000:1000"
+    volumes:
+      - ~/:/home/jude
+    depends_on:
+      - network-filter
+  network-filter:
+    image: monadicalsas/network-filter:latest
+    ports:
+      - "4096:4096"
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - ALLOWED_DOMAINS=github.com:22:443,api.github.com,search.maven.org,maven.apache.org,repo.maven.apache.org,repo1.maven.org,api.openai.com,models.dev,registry.npmjs.org,release-assets.githubusercontent.com,app.opencode.ai,api.githubcopilot.com,production-global-management-eu-west-1-static-packages.s3.eu-west-1.amazonaws.com,packages.confluent.io,repo.spring.io,oss.sonatype.org,maven-central.storage-download.googleapis.com,fastdl.mongodb.org,maven.repository.redhat.com,repository.hazelcast.com
