@@ -6,6 +6,7 @@ services:
     volumes:
       - home:/home/jude
       - ~/developer:/home/jude/developer
+      - ~/.ssh:/home/jude/.ssh
     depends_on:
       - network-filter
   network-filter:
