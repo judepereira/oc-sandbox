@@ -13,4 +13,4 @@ curl -fsSL https://opencode.ai/install | bash
 source ~/.bashrc
 cd developer
 
-~/.opencode/bin/opencode serve --port 4096 --hostname 0.0.0.0
+~/.opencode/bin/opencode --log-level DEBUG serve --port 4096 --hostname 0.0.0.0
