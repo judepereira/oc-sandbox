@@ -4,6 +4,10 @@ set -euo pipefail
 TAG_BIN="# from entrypoint.sh: add bin"
 TAG_USER="# from entrypoint.sh: add user"
 
+if ! cat ~/.bashrc | grep "PS1"; then
+  echo "export PS1=\"\[\e]0;\u@\h: \w\a\]\${debian_chroot:+(\$debian_chroot)}\u@\h:\W\$ \"" >> ~/.bashrc
+fi
+
 if ! cat ~/.bashrc | grep "$TAG_BIN"; then
     echo "$TAG_BIN" >> ~/.bashrc
     echo "export PATH=~/bin:\$PATH" >> ~/.bashrc
