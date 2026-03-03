@@ -15,12 +15,13 @@ if ! cat ~/.bashrc | grep "$TAG_USER"; then
 fi
 
 # Install JDK 17
-if [[ ! -d ~/.jdks/amazon-corretto-17 ]]; then
+if [[ ! -d ~/.jdks/amazon-corretto-17* ]]; then
   pushd ~/.jdks
   curl -Lo - https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz | tar -xvzf -
   path=$(ls | grep amazon-corretto-17)
   echo "export PATH=~/.jdks/$path/bin:\$PATH" >> ~/.bashrc
   echo "export JAVA_HOME=~/.jdks/$path" >> ~/.bashrc
+  popd
 fi
 
 curl -fsSL https://opencode.ai/install | bash
