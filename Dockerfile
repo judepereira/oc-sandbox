@@ -15,6 +15,7 @@ RUN     groupdel ubuntu || true
 RUN     groupadd -g $UID $USER && useradd -u $UID -g $UID -m -s /bin/bash $USER
 RUN     echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 COPY    entrypoint.sh /entrypoint.sh
+ADD     opencode /opencode
 
 USER    $USER
 

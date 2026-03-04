@@ -19,7 +19,7 @@ if ! cat ~/.bashrc | grep "$TAG_USER"; then
 fi
 
 # Install JDK 17
-if [[ ! -d ~/.jdks/amazon-corretto-17* ]]; then
+if ! ls ~/.jdks | grep amazon-corretto-17; then
   pushd ~/.jdks
   curl -Lo - https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz | tar -xvzf -
   path=$(ls | grep amazon-corretto-17)
@@ -30,7 +30,15 @@ fi
 
 curl -fsSL https://opencode.ai/install | bash
 
+# Refresh agents and commands
+for i in commands agents; do
+  echo "Copying config for $i..."
+  rm -rf ~/.config/opencode/$i
+  mkdir -p ~/.config/opencode/$i
+  cp -r /opencode/$i/* ~/.config/opencode/$i/
+done
+
 source ~/.bashrc
-cd developer
+cd ~/developer
 
 ~/.opencode/bin/opencode --log-level DEBUG serve --port 4096 --hostname 0.0.0.0
