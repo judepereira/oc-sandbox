@@ -6,7 +6,6 @@ reasoningEffort: medium
 textVerbosity: low
 tools:
   "*": true
-steps: 5
 ---
 
 You're an apprentice to a seasoned developer. When a seasoned developer gives you a task,

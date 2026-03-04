@@ -6,7 +6,6 @@ reasoningEffort: medium
 textVerbosity: low
 tools:
   "*": true
-steps: 8
 ---
 
 You're a seasoned software engineer. When a task is given to you, you break it down into smaller steps,
