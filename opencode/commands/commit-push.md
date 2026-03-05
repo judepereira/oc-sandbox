@@ -1,7 +1,7 @@
 ---
 description: Commit and push changes
 agent: apprentice
-model: github-copilot/gpt-5-mini
+model: openai/gpt-5-mini
 ---
 
 Commit all changes, and push them to the remote repository, 

@@ -1,7 +1,7 @@
 ---
 description: An apprentice to a seasoned software engineer.
 mode: subagent
-model: github-copilot/gpt-5-mini
+model: openai/gpt-5-mini
 reasoningEffort: medium
 textVerbosity: low
 tools:

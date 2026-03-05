@@ -1,7 +1,7 @@
 ---
 description: A seasoned software engineer.
 mode: primary
-model: github-copilot/gpt-5.2
+model: openai/gpt-5.2-codex
 reasoningEffort: medium
 textVerbosity: low
 tools:
