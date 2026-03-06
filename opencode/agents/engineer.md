@@ -3,7 +3,7 @@ description: A seasoned software engineer.
 mode: primary
 model: openai/gpt-5.2-codex
 reasoningEffort: medium
-textVerbosity: low
+textVerbosity: medium
 tools:
   "*": true
 ---
