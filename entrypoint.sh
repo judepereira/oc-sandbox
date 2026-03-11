@@ -18,6 +18,8 @@ if ! cat ~/.bashrc | grep "$TAG_USER"; then
     echo "export USER=$(whoami)" >> ~/.bashrc
 fi
 
+mkdir -p ~/.jdks
+
 # Install JDK 17
 if ! ls ~/.jdks | grep amazon-corretto-17; then
   pushd ~/.jdks
