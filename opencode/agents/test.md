@@ -19,7 +19,8 @@ Here are guidelines on how tests should be run:
 
 # General Guidelines
 If a module is a large module (more than 100K lines of code, or contains more than 25 test files), don't run all
-tests for the module. Instead, run tests that are relevant to our changes.
+tests for the module. Instead, run tests that are relevant to our changes. If tests pass successfully, just report the
+total test count and pass count. There's no need to report any warnings generated, or any actual output.
 
 ### For Maven Projects
 Let's test out our changes in the module that we've been working on. In order to test a module efficiently
