@@ -40,6 +40,8 @@ for i in commands agents; do
   cp -r /opencode/$i/* ~/.config/opencode/$i/
 done
 
+cp /opencode/opencode.json ~/.config/opencode/opencode.json
+
 source ~/.bashrc
 cd ~/developer
 

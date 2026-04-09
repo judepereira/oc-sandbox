@@ -13,6 +13,8 @@ services:
       - home:/home/${OC_USER}
       - ~/developer:/home/${OC_USER}/developer
       - ~/.ssh:/home/${OC_USER}/.ssh:ro
+    env_file:
+      - .env
     depends_on:
       - network-filter
   network-filter:
