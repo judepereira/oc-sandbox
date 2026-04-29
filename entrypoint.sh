@@ -30,6 +30,13 @@ if ! ls ~/.jdks | grep amazon-corretto-17; then
   popd
 fi
 
+# Install JDK 25
+if ! ls ~/.jdks | grep jdk-25; then
+  pushd ~/.jdks
+  curl -Lo - https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jdk_x64_linux_hotspot_25.0.2_10.tar.gz | tar -xvzf -
+  popd
+fi
+
 curl -fsSL https://opencode.ai/install | bash
 
 # Refresh agents and commands
