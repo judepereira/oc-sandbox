@@ -11,5 +11,13 @@
         "Authorization": "Bearer {env:GH_MCP_PAT}"
       }
     }
+  },
+  "agent": {
+    "plan": {
+      "model": "openai/gpt-5.5"
+    },
+    "explore": {
+      "model": "openai/gpt-5.4-mini"
+    }
   }
 }
