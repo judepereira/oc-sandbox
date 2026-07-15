@@ -37,7 +37,7 @@ if ! ls ~/.jdks | grep jdk-25; then
   popd
 fi
 
-curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://opencode.ai/install | bash -s -- --version 1.17.20
 
 # Refresh agents and commands
 for i in commands agents; do
