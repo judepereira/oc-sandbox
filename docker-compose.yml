@@ -17,20 +17,39 @@ services:
       - .env
     depends_on:
       - network-filter
+  jupiter:
+    image: judepereira/jupiter:latest
+    network_mode: "service:network-filter"
+    restart: unless-stopped
+    volumes:
+      - jupiter:/home/jude/.jupiter
+      - ~/developer:/home/jude/developer:rw
+      - ~/.ssh:/home/jude/.ssh:ro
+    environment:
+      - WITH_UID=${OC_UID}
+      - WITH_GID=${OC_GID}
+      - USERNAME=jude
+      - PORT=${JUPITER_PORT}
+    env_file:
+      - .env
+    depends_on:
+      - network-filter
   network-filter:
     image: monadicalsas/network-filter:latest
     restart: unless-stopped
     ports:
       - "${OC_PORT:-4096}:4096"
+      - "${JUPITER_PORT:-7272}:7272"
     cap_add:
       - NET_ADMIN
     environment:
-      - ALLOWED_DOMAINS=packages.atlassian.com,github.com:22:443,api.github.com,search.maven.org,maven.apache.org,repo.maven.apache.org,repo1.maven.org,api.openai.com,models.dev,registry.npmjs.org,release-assets.githubusercontent.com,opencode.ai,api.githubcopilot.com,production-global-management-eu-west-1-static-packages.s3.eu-west-1.amazonaws.com,packages.confluent.io,repo.spring.io,oss.sonatype.org,maven-central.storage-download.googleapis.com,fastdl.mongodb.org,maven.repository.redhat.com,maven.repository.redhat.com,repository.hazelcast.com,playwright.download.prss.microsoft.com,cdn.playwright.dev,raw.githubusercontent.com,github-cloud.githubusercontent.com,auth.openai.com,chatgpt.com,nodejs.org,iojs.org,registry.yarnpkg.com,corretto.aws,download.eclipse.org,archive.eclipse.org,generativelanguage.googleapis.com,vaadin.com
+      - ALLOWED_DOMAINS=storage.googleapis.com,packages.atlassian.com,github.com:22:443,api.github.com,search.maven.org,maven.apache.org,repo.maven.apache.org,repo1.maven.org,api.openai.com,models.dev,registry.npmjs.org,release-assets.githubusercontent.com,opencode.ai,api.githubcopilot.com,production-global-management-eu-west-1-static-packages.s3.eu-west-1.amazonaws.com,packages.confluent.io,repo.spring.io,oss.sonatype.org,maven-central.storage-download.googleapis.com,fastdl.mongodb.org,maven.repository.redhat.com,maven.repository.redhat.com,repository.hazelcast.com,playwright.download.prss.microsoft.com,cdn.playwright.dev,raw.githubusercontent.com,github-cloud.githubusercontent.com,auth.openai.com,chatgpt.com,nodejs.org,iojs.org,registry.yarnpkg.com,corretto.aws,download.eclipse.org,archive.eclipse.org,generativelanguage.googleapis.com,vaadin.com,jfrog-prod-use1-shared-virginia-main.s3.amazonaws.com
     networks:
       - oc_network
 
 volumes:
   home:
+  jupiter:
 
 networks:
   oc_network:
