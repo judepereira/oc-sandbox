@@ -16,3 +16,5 @@ Note: information in the existing PR description such as checkboxes checked, Jir
 
 Once pushed, check the PR mergeability status. If it's dirty with respect to its base branch, pull the base branch,
 and then merge it into the current branch. Resolve any conflicts that arise appropriately. Push once done.
+
+Important: If there are no merge conflicts between this branch and the base branch, DO NOT merge the base branch and push.
