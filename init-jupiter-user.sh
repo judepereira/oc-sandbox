@@ -12,3 +12,10 @@ if ! ls ~/.jdks | grep jdk-25; then
   echo "export JAVA_HOME=~/.jdks/$path" >> ~/.bashrc
   popd
 fi
+
+# Install JDK 17
+if ! ls ~/.jdks | grep amazon-corretto-17; then
+  pushd ~/.jdks
+  curl -Lo - https://corretto.aws/downloads/resources/17.0.20.10.1/amazon-corretto-17.0.20.10.1-linux-x64.tar.gz | tar -xvzf -
+  popd
+fi
