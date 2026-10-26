@@ -19,3 +19,7 @@ if ! ls ~/.jdks | grep amazon-corretto-17; then
   curl -Lo - https://corretto.aws/downloads/resources/17.0.20.10.1/amazon-corretto-17.0.20.10.1-linux-x64.tar.gz | tar -xvzf -
   popd
 fi
+
+# Install nvm & Node 24
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+source ~/.bashrc && nvm install 24 && npm i -g yarn && echo installed
