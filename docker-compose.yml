@@ -1,22 +1,4 @@
 services:
-  opencode:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        UID: ${OC_UID}
-        USER: ${OC_USER}
-    network_mode: "service:network-filter"
-    restart: unless-stopped
-    user: "${OC_UID}:${OC_UID}"
-    volumes:
-      - home:/home/${OC_USER}
-      - ~/developer:/home/${OC_USER}/developer
-      - ~/.ssh:/home/${OC_USER}/.ssh:ro
-    env_file:
-      - .env
-    depends_on:
-      - network-filter
   jupiter:
     image: judepereira/jupiter:latest
     network_mode: "service:network-filter"
@@ -44,7 +26,7 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - ALLOWED_DOMAINS=api.pushover.net,storage.googleapis.com,maven.artifacts.atlassian.com,security.ubuntu.com,archive.ubuntu.com,storage.googleapis.com,packages.atlassian.com,github.com:22:443,api.github.com,search.maven.org,maven.apache.org,repo.maven.apache.org,repo1.maven.org,api.openai.com,models.dev,registry.npmjs.org,release-assets.githubusercontent.com,opencode.ai,api.githubcopilot.com,production-global-management-eu-west-1-static-packages.s3.eu-west-1.amazonaws.com,packages.confluent.io,repo.spring.io,oss.sonatype.org,maven-central.storage-download.googleapis.com,fastdl.mongodb.org,maven.repository.redhat.com,maven.repository.redhat.com,repository.hazelcast.com,playwright.download.prss.microsoft.com,cdn.playwright.dev,raw.githubusercontent.com,github-cloud.githubusercontent.com,auth.openai.com,chatgpt.com,nodejs.org,iojs.org,registry.yarnpkg.com,corretto.aws,download.eclipse.org,archive.eclipse.org,generativelanguage.googleapis.com,vaadin.com,jfrog-prod-use1-shared-virginia-main.s3.amazonaws.com
+      - ALLOWED_DOMAINS=mcp.semaphoreci.com,api.pushover.net,storage.googleapis.com,maven.artifacts.atlassian.com,security.ubuntu.com,archive.ubuntu.com,storage.googleapis.com,packages.atlassian.com,github.com:22:443,api.github.com,search.maven.org,maven.apache.org,repo.maven.apache.org,repo1.maven.org,api.openai.com,models.dev,registry.npmjs.org,release-assets.githubusercontent.com,api.githubcopilot.com,production-global-management-eu-west-1-static-packages.s3.eu-west-1.amazonaws.com,packages.confluent.io,repo.spring.io,oss.sonatype.org,maven-central.storage-download.googleapis.com,fastdl.mongodb.org,maven.repository.redhat.com,maven.repository.redhat.com,repository.hazelcast.com,playwright.download.prss.microsoft.com,cdn.playwright.dev,raw.githubusercontent.com,github-cloud.githubusercontent.com,auth.openai.com,chatgpt.com,nodejs.org,iojs.org,registry.yarnpkg.com,corretto.aws,download.eclipse.org,archive.eclipse.org,generativelanguage.googleapis.com,vaadin.com,jfrog-prod-use1-shared-virginia-main.s3.amazonaws.com
     env_file:
       - .env
     networks:
