@@ -1,67 +1,46 @@
-# oc-sandbox
+# Jupiter development sandbox
 
-`oc-sandbox` is a Docker-based development sandbox for running [OpenCode](https://opencode.ai/) with:
+This repository runs the `judepereira/jupiter:latest` image in Docker Compose with a dedicated non-root user and a network-filter service that limits outbound connections to an allowlist. It provides a repeatable development workspace; the network filter is not a complete isolation boundary or a replacement for configuring tool permissions.
 
-- a reproducible Ubuntu 24.04 workspace
-- a dedicated non-root user mapped to your host UID
-- preloaded OpenCode config, agents, and commands from this repo
-- outbound network filtering through a domain allowlist
+## Services and setup
 
-The main goal is to provide a safer, repeatable environment for AI-assisted coding sessions.
+Compose starts two services:
 
-## What This Project Does
+- `jupiter`: the Jupiter runtime, running as the fixed user `jude`.
+- `network-filter`: provides the shared network namespace and outbound domain filtering.
 
-When started with Docker Compose, the stack launches two services:
+The Jupiter image's initialization scripts install common OS and browser dependencies, set up Temurin JDK 25 as the default Java, add Amazon Corretto JDK 17, and install nvm with Node.js 24 and Yarn. The scripts are mounted into the container by Compose.
 
-- `opencode`: your interactive OpenCode runtime container
-- `network-filter`: a proxy/firewall container that restricts outbound traffic to approved domains
-
-On startup, the `opencode` container:
-
-1. configures shell environment defaults
-2. installs Amazon Corretto JDK 17 into `~/.jdks` (if missing)
-3. installs OpenCode via the official installer
-4. copies repo-managed OpenCode config from `opencode/` into `~/.config/opencode/`
-5. starts `opencode serve` on port `4096`
-
-## Prerequisites
-
-- Docker and Docker Compose
-- A `.env` file with values used by `docker-compose.yml` (for example `OC_UID`, `OC_USER`, `OC_PORT`)
-- Optional: `GH_MCP_PAT` if you want to use the GitHub MCP endpoint configured in `opencode/opencode.json`
-
-## Quick Start
-
-1. Create/update `.env` with your user and port settings.
-2. Build and start:
+Prerequisites: Docker with the Compose plugin. Create a `.env` file in the repository root:
 
 ```bash
-docker compose up --build -d
+cat > .env <<EOF
+JUPITER_UID=$(id -u)
+JUPITER_GID=$(id -g)
+JUPITER_PORT=7272
+JUPITER_NETWORK=192.168.0.0/24
+EOF
 ```
 
-3. View logs:
+Choose a subnet that does not conflict with networks already in use on your machine. Start the services and follow Jupiter's logs:
 
 ```bash
-docker compose logs -f opencode
+docker compose up -d
+docker compose logs -f jupiter
 ```
 
-4. Access OpenCode on:
+Open [http://localhost:7272](http://localhost:7272), or use the host port configured by `JUPITER_PORT`.
 
-```text
-http://localhost:${OC_PORT:-4096}
-```
+## Persistent data and mounts
 
-## Customization
+The named `jupiter` volume persists `/home/jude/.jupiter`. The container home directory itself is not persisted. The host's `~/developer` directory is mounted read-write at `/home/jude/developer`; `~/.ssh` is mounted read-only at `/home/jude/.ssh`.
 
-- Edit `opencode/agents/*.md` to change agent behavior and model selection.
-- Edit `opencode/commands/*.md` to add command shortcuts/workflows.
-- Edit `opencode/opencode.json` for OpenCode permissions or MCP integrations.
-- Edit the `ALLOWED_DOMAINS` value in `docker-compose.yml` to tighten or expand network access.
+The username and paths in the Compose mounts are currently fixed to `jude`. If you change the container username, update the corresponding volume paths and the `USERNAME` setting in `docker-compose.yml`, along with the hardcoded `/home/jude` paths and `jude` ownership references in `init-jupiter.sh`.
 
-## Notes
+## Network filtering
 
-- Host directories are mounted into the container:
-  - `~/developer` -> `/home/${OC_USER}/developer`
-  - `~/.ssh` (read-only) -> `/home/${OC_USER}/.ssh`
-- Container home is persisted through the named Docker volume `home`.
-- The project currently trusts all OpenCode tool permissions (`"*": "allow"` in `opencode/opencode.json`).
+`network-filter` exposes the configured Jupiter port and applies the `ALLOWED_DOMAINS` list in `docker-compose.yml` to outbound traffic. Adjust that list to suit your environment; restricting network destinations alone does not guarantee that tools or code running in Jupiter are safe.
+
+## Upgrading from the previous configuration
+
+If you already have a `.env` file, rename `OC_UID`, `OC_GID`, and `OC_NETWORK` to `JUPITER_UID`, `JUPITER_GID`, and `JUPITER_NETWORK`. The old OpenCode port setting is no longer used; configure `JUPITER_PORT` instead. Existing Jupiter data remains in the `jupiter` volume.

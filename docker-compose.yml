@@ -10,8 +10,8 @@ services:
       - ~/developer:/home/jude/developer:rw
       - ~/.ssh:/home/jude/.ssh:ro
     environment:
-      - WITH_UID=${OC_UID}
-      - WITH_GID=${OC_GID}
+      - WITH_UID=${JUPITER_UID}
+      - WITH_GID=${JUPITER_GID}
       - USERNAME=jude
     env_file:
       - .env
@@ -21,7 +21,6 @@ services:
     image: monadicalsas/network-filter:latest
     restart: unless-stopped
     ports:
-      - "${OC_PORT:-4096}:4096"
       - "${JUPITER_PORT:-7272}:7272"
     cap_add:
       - NET_ADMIN
@@ -30,15 +29,14 @@ services:
     env_file:
       - .env
     networks:
-      - oc_network
+      - jupiter_network
 
 volumes:
-  home:
   jupiter:
 
 networks:
-  oc_network:
+  jupiter_network:
     driver: bridge
     ipam:
       config:
-        - subnet: "${OC_NETWORK:-192.168.0.0/24}"
+        - subnet: "${JUPITER_NETWORK:-192.168.0.0/24}"
